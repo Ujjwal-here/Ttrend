@@ -8,7 +8,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '/opt/apache-maven-3.9.10/bin/mvn clean deploy'
+                echo '-------------------- build started --------------------'
+                sh '/opt/apache-maven-3.9.10/bin/mvn clean deploy -Dmaven.test.skip=true'
+                echo '-------------------- build completed --------------------'
+            }
+        }
+        stage("Test") {
+            steps {
+                echo '-------------------- test started --------------------'
+                sh '/opt/apache-maven-3.9.10/bin/mvn surefire-report:report'
+                echo '-------------------- test completed --------------------'
             }
         }
         stage('SonarQube analysis') {

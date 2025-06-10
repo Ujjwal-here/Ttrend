@@ -40,7 +40,7 @@ pipeline {
                           "files": [
                             {
                               "pattern": "target/*.jar",
-                              "target": "libs-release-local/{1}",
+                              "target": "libs-release-local/com/valaxy/demo-workshop/2.1.2/",
                               "flat": "false"
                             }
                          ]

@@ -58,19 +58,23 @@ pipeline {
 
         stage("Docker Build") {
             steps {
-                echo '-------------------- docker build started --------------------'
-                app = docker.build(imageName + ":" + version)
-                echo '-------------------- docker build completed --------------------'
+                script {
+                    echo '-------------------- docker build started --------------------'
+                    app = docker.build(imageName + ":" + version)
+                    echo '-------------------- docker build completed --------------------'
+                }
             }
         }
 
         stage("Docker Publish") {
             steps {
-                echo '-------------------- docker publish started --------------------'
-                docker.withRegistry(registry, "jfrogartifactory-cred") {
-                    app.push()
+                script {
+                    echo '-------------------- docker publish started --------------------'
+                    docker.withRegistry(registry, "jfrogartifactory-cred") {
+                        app.push()
+                    }
+                    echo '-------------------- docker publish completed --------------------'
                 }
-                echo '-------------------- docker publish completed --------------------'
             }
         }
         

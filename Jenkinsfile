@@ -1,4 +1,6 @@
 def registry = 'https://trialheqmpk.jfrog.io/'
+def imageName = 'trialheqmpk.jfrog.io/ttrend-docker-local/ttrend'
+def version = '2.1.2'
 
 pipeline {
     agent {
@@ -52,6 +54,25 @@ pipeline {
             
                 }
             }   
-        }   
+        }
+
+        stage("Docker Build") {
+            steps {
+                echo '-------------------- docker build started --------------------'
+                app = docker.build(imageName + ":" + version)
+                echo '-------------------- docker build completed --------------------'
+            }
+        }
+
+        stage("Docker Publish") {
+            steps {
+                echo '-------------------- docker publish started --------------------'
+                docker.withRegistry(registry, "jfrogartifactory-cred") {
+                    app.push()
+                }
+                echo '-------------------- docker publish completed --------------------'
+            }
+        }
+        
     }
 }
